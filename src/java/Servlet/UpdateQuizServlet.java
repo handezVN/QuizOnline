@@ -5,7 +5,7 @@
  */
 package Servlet;
 
-import DAO.SubmitDao;
+import DAO.QuestionDao;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -16,14 +16,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author handez
  */
-@WebServlet(name = "ControllerServlet", urlPatterns = {"/ControllerServlet"})
-public class ControllerServlet extends HttpServlet {
+@WebServlet(name = "UpdateQuizServlet", urlPatterns = {"/UpdateQuizServlet"})
+public class UpdateQuizServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,31 +38,37 @@ public class ControllerServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-           String action = request.getParameter("action");
-           switch(action){
-               case "subject-create": {
-                   request.setAttribute("sbcreate", "subject-create");
-                   request.getRequestDispatcher("AdminPage.jsp").forward(request, response);
-               };
-               case "quiz-admin":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   request.setAttribute("user", "admin");
-                   request.getRequestDispatcher("QuizPage.jsp").forward(request, response);
-               };
-               case "quiz-create":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   request.setAttribute("user", "admin");
-                   request.getRequestDispatcher("CreateQuizPage.jsp").forward(request, response);
-               };
-               
-               case "quizcheck":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   
-                    request.getRequestDispatcher("CheckQuizPage.jsp").forward(request, response);
-               }
-           }
-        } 
+            String questionid = request.getParameter("questionid");
+            String subjectid = request.getParameter("subjectid");
+            String point_tmp = request.getParameter("point");
+           String question = request.getParameter("question");
+           String answer_content_tmp[] = request.getParameterValues("mytext[]");
+           String answer_correct[] = request.getParameterValues("selected");
+           String answer ="";
+           String correct ="";
+           System.out.println("Point"+point_tmp);
+            System.out.println("Question"+question);
+            
+            for(int i=0;i<answer_content_tmp.length;i++){
+                Boolean check = false;
+                answer+=answer_content_tmp[i]+"/";
+                for(int y=0;y<answer_correct.length;y++){
+                    
+                    if(Integer.parseInt(answer_correct[y])==i) check =true;
+                }
+                correct += check+"/";
+            }
+            int point = Integer.parseInt(point_tmp);
+            QuestionDao dao = new QuestionDao();
+            int result = dao.updateQuestion(questionid, question, correct, answer, point);
+            if(result!=-1){
+                request.setAttribute("subjectid", subjectid);
+                request.setAttribute("user", "admin");
+                request.getRequestDispatcher("QuizPage.jsp").forward(request, response);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateQuizServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

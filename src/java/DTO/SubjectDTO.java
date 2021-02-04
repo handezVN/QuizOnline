@@ -17,7 +17,19 @@ public class SubjectDTO {
     private String date;
     private int time;
     private int attempts;
-
+    private boolean status;
+    private boolean isdelete;
+    
+    public SubjectDTO(String id, String name, String email, String password, String date, int time, int attempts, boolean status) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.date = date;
+        this.time = time;
+        this.attempts = attempts;
+        this.status = status;
+    }
     public SubjectDTO(String id, String name, String email, String password, String date, int time, int attempts) {
         this.id = id;
         this.name = name;
@@ -26,6 +38,14 @@ public class SubjectDTO {
         this.date = date;
         this.time = time;
         this.attempts = attempts;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public int getAttempts() {
@@ -91,6 +111,26 @@ public class SubjectDTO {
         this.password = password;
         this.date = date;
         this.time = time;
+    }
+
+    public SubjectDTO(String id, String name, String email, String password, String date, int time, int attempts, boolean status, boolean isdelete) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.date = date;
+        this.time = time;
+        this.attempts = attempts;
+        this.status = status;
+        this.isdelete = isdelete;
+    }
+
+    public boolean isIsdelete() {
+        return isdelete;
+    }
+
+    public void setIsdelete(boolean isdelete) {
+        this.isdelete = isdelete;
     }
 
     public SubjectDTO() {

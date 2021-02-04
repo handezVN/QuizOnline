@@ -23,5 +23,6 @@
             <c:if test="${not empty Err}">
                 <Strong style="color: red">${Err}</Strong>
             </c:if>
+                <a href="Register.jsp">Register</a>
     </body>
 </html>

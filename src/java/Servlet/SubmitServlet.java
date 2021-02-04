@@ -6,9 +6,11 @@
 package Servlet;
 
 import DAO.SubmitDao;
+import DTO.DetailSubmitDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -16,14 +18,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author handez
  */
-@WebServlet(name = "ControllerServlet", urlPatterns = {"/ControllerServlet"})
-public class ControllerServlet extends HttpServlet {
+@WebServlet(name = "SubmitServlet", urlPatterns = {"/SubmitServlet"})
+public class SubmitServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,31 +40,24 @@ public class ControllerServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-           String action = request.getParameter("action");
-           switch(action){
-               case "subject-create": {
-                   request.setAttribute("sbcreate", "subject-create");
-                   request.getRequestDispatcher("AdminPage.jsp").forward(request, response);
-               };
-               case "quiz-admin":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   request.setAttribute("user", "admin");
-                   request.getRequestDispatcher("QuizPage.jsp").forward(request, response);
-               };
-               case "quiz-create":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   request.setAttribute("user", "admin");
-                   request.getRequestDispatcher("CreateQuizPage.jsp").forward(request, response);
-               };
-               
-               case "quizcheck":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   
-                    request.getRequestDispatcher("CheckQuizPage.jsp").forward(request, response);
-               }
-           }
-        } 
+            String submitid= request.getParameter("submitid");
+            SubmitDao dao = new SubmitDao();
+            ArrayList<DetailSubmitDTO> list = dao.getDetailSubmit(submitid);
+            float point =0;
+            float point_get =0;
+            float point_total =0;
+            for (DetailSubmitDTO sb: list){
+                point_get+=sb.getPoint_get();
+                point_total+=sb.getPoint();
+            }
+            point= (point_get/point_total)*10;
+            System.out.println(point);
+            dao.updateSubmitEnd(submitid, point, point_total, point_get);
+            request.setAttribute("submitid", submitid);
+            request.getRequestDispatcher("ConfirmPage.jsp").forward(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(SubmitServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

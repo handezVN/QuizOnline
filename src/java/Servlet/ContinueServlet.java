@@ -6,6 +6,7 @@
 package Servlet;
 
 import DAO.SubmitDao;
+import DTO.SubmitDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -22,8 +23,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author handez
  */
-@WebServlet(name = "ControllerServlet", urlPatterns = {"/ControllerServlet"})
-public class ControllerServlet extends HttpServlet {
+@WebServlet(name = "ContinueServlet", urlPatterns = {"/ContinueServlet"})
+public class ContinueServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,31 +39,14 @@ public class ControllerServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            HttpSession session = request.getSession();
-           String action = request.getParameter("action");
-           switch(action){
-               case "subject-create": {
-                   request.setAttribute("sbcreate", "subject-create");
-                   request.getRequestDispatcher("AdminPage.jsp").forward(request, response);
-               };
-               case "quiz-admin":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   request.setAttribute("user", "admin");
-                   request.getRequestDispatcher("QuizPage.jsp").forward(request, response);
-               };
-               case "quiz-create":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   request.setAttribute("user", "admin");
-                   request.getRequestDispatcher("CreateQuizPage.jsp").forward(request, response);
-               };
-               
-               case "quizcheck":{
-                   request.setAttribute("subjectid", request.getParameter("id"));
-                   
-                    request.getRequestDispatcher("CheckQuizPage.jsp").forward(request, response);
-               }
-           }
+           String submitid = request.getParameter("submitid");
+            String subjectid = request.getParameter("subjectid");
+            System.out.println(submitid);
+            HttpSession session= request.getSession();
+            session.setAttribute("submitid", submitid);
+            session.setAttribute("subjectid", subjectid);
+            session.setAttribute("user", "student");
+            request.getRequestDispatcher("QuizPage.jsp").forward(request, response);
         } 
     }
 

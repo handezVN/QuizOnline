@@ -47,19 +47,20 @@ public class CreateSubjectServlet extends HttpServlet {
            String email = (String) session.getAttribute("email");
            String date_tmp = request.getParameter("date");
            String time_tmp = request.getParameter("time");
+           int attempt = Integer.parseInt(request.getParameter("attempt"));
            int time = Integer.parseInt(time_tmp);
            time = Math.abs(time);
             SubjectDao dao = new SubjectDao();
            String id = "Sb"+(dao.getAllSubject().size()+1) ;
             
             
-           
+           Boolean status = Boolean.parseBoolean(request.getParameter("status"));
             String date_tmp1[] = date_tmp.split("T");
             String date = date_tmp1[0];
             date = date +" "+date_tmp1[1]+":00";
             System.out.println(date);
            int result = -1;
-           result = dao.addNewSubject(id, email, password, name, date, time);
+           result = dao.addNewSubject(id, email, password, name, date, time,attempt,status);
            if(result!=-1){
                request.getRequestDispatcher("AdminPage.jsp").forward(request, response);
            }

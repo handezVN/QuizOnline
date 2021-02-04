@@ -17,7 +17,26 @@ public class QuestionDTO {
     private String subjectid ;
     private int point ;
     private boolean status;
+    private boolean isdelete;
 
+    public boolean isIsdelete() {
+        return isdelete;
+    }
+
+    public void setIsdelete(boolean isdelete) {
+        this.isdelete = isdelete;
+    }
+
+    public QuestionDTO(String id, String question, String answer, String correct, String subjectid, int point, boolean status, boolean isdelete) {
+        this.id = id;
+        this.question = question;
+        this.answer = answer;
+        this.correct = correct;
+        this.subjectid = subjectid;
+        this.point = point;
+        this.status = status;
+        this.isdelete = isdelete;
+    }
     public QuestionDTO() {
     }
 

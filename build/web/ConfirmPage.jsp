@@ -13,8 +13,10 @@
         <title>JSP Page</title>
     </head>
     <body>
+        <a href="UserPage.jsp" > Back</a>
         <%
             String submitid =(String) request.getAttribute("submitid");
+            System.out.println(submitid);
             SubmitDao dao = new SubmitDao();
             request.setAttribute("submit", dao.getSubmitbyID(submitid));
         %>

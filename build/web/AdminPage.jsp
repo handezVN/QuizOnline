@@ -17,6 +17,20 @@
                 border: solid 1px;
                 padding: 10px;
                 background: #009966;
+                margin: 5%;
+            }
+            .Subject .edit{
+                position: relative;
+                bottom: 120px;
+                left: 95%;
+                width: 50px;
+                
+            }
+            .delete{
+                position: relative;
+                top: 0%;
+                left: 95%;
+                width: 20px;
             }
         </style>
     </head>
@@ -25,37 +39,33 @@
             <input type="submit" value="Logout">
         </form>
         <h1>Hello World!</h1>
-        <a href="ControllerServlet?action=subject-create"> Create Subject</a>
+        <a href="FormQuizServlet?action=subject-create"> Create Subject</a>
         <br>
         <br>
         <br>
         <br>
         <br>
-        <c:if test="${not empty sbcreate}">
-            <form action="CreateSubjectServlet">
-
-                <input type="text" value="" name="name" placeholder="Subject Name" value="${param.name}"  required=""><br>
-
-                <input type="password" value="" name="password" placeholder="Subject Password" value="${param.password}" id="sb-password" > <br>
-                <input type="checkbox" onclick="myFunction()">Show Password<br>
-                Time:<input type="number" value="${param.time}" name="time" >
-                <input type="datetime-local" name="date" value="${param.date}">
-                <input type="submit" value="Create New Subject">
-            </form>
-        </c:if>
+        
         <%
             SubjectDao dao = new SubjectDao();
             request.setAttribute("subjectlist", dao.getAllSubject());
-            
+            String admin1 = session.getAttribute("isAdmin")+"";
+            if(!admin1.equals("true")){
+                response.sendRedirect("Login.jsp");
+            }
         %>
         
         <c:forEach var="item" items="${subjectlist}">
+            <c:if test="${item.isdelete eq false}">
             <div class="Subject">
-            <a href="ControllerServlet?action=quiz-admin&id=${item.id}"><h1>${item.name}</h1></a> 
+                <h1><a href="ControllerServlet?action=quiz-admin&id=${item.id}">${item.name}</a></h1>
             Create by ${item.email}<br>
-            DateLine:${item.date}<br>
+            DeadLine:${item.date}<br>
             Time : ${item.time} Minutes
+            <div class="edit"><a href="FormQuizServlet?action=subject-update&id=${item.id}"><img src="edit.svg" ></a></div>
+            <div class="delete"><a href="FormQuizServlet?action=subject-delete&id=${item.id}"><img src="trash.svg" width="50px"></a></div>
             </div>
+            </c:if>
         </c:forEach>
         <script>
             function myFunction() {

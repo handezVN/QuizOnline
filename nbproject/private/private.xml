@@ -4,11 +4,15 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/TestServlet.java</file>
-            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/Servlet/ControllerServlet.java</file>
-            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/Servlet/LoginServlet.java</file>
-            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/web/UserPage.jsp</file>
+            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/DAO/SubmitDao.java</file>
+            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/web/CreateQuizPage.jsp</file>
+            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/Servlet/PageQuizServlet.java</file>
+            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/Servlet/BeginQuizServlet.java</file>
+            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/test/NewClass.java</file>
+            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/web/CheckQuizPage.jsp</file>
+            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/Servlet/ContinueServlet.java</file>
             <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/web/QuizPage.jsp</file>
-            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/web/newjsp.jsp</file>
+            <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/Servlet/UpdateSubjectServlet.java</file>
             <file>file:/C:/Users/handez/Desktop/JavaWEB/QuizOnline/src/java/DAO/QuestionDao.java</file>
         </group>
     </open-files>

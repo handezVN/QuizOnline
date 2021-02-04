@@ -24,12 +24,15 @@
             <input type="submit" value="LogOut">
         </form>
         <c:forEach var="item" items="${subjectlist}">
+            <c:if test="${item.isdelete eq false}">
             <div class="Subject">
-            <a href="ControllerServlet?action=quizcheck&id=${item.id}&time=${item.time}"><h1>${item.name}</h1></a> 
+            <a href="ControllerServlet?action=quizcheck&id=${item.id}&time=${item.time}&attempt=${item.attempts}"><h1>${item.name}</h1></a> 
             Create by ${item.email}
-            DateLine:${item.date}
+            DeadLine:${item.date}
             Time : ${item.time}
+            
             </div>
+            </c:if>
         </c:forEach>
         <script>
             function myFunction() {

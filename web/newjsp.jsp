@@ -14,34 +14,16 @@
         <title>JSP Page</title>
     </head>
     <body>
-         <div>Closes in <span id="time">05:00</span> minutes!</div>
-         <input type="number" id="myText" value="10">
-        <script>
-            function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = minutes + ":" + seconds;
-
-        if (--timer < 0) {
-            window.location.href = "http://stackoverflow.com";
-
-        }
-    }, 1000);
-}
-
-window.onload = function () {
-     var x = document.getElementById("myText");
-  var defaultVal = x.defaultValue;
-    var fiveMinutes = defaultVal * 60,
-        display = document.querySelector('#time');
-    startTimer(fiveMinutes, display);
-};
-        </script>
+       <input type="text" id="input_1" value="1" gia_tri="2">
+<div class="mt-3" id="kq_input_1">ABC</div>
+    <script type="text/javascript">
+    var input_1 = document.getElementById("input_1");
+    var value_input_1 = input_1.value;
+    console.log(value_input_1);
+    var gia_tri_input_1 = input_1.getAttribute("gia_tri");
+    console.log(gia_tri_input_1);
+    var div_input_1 = document.getElementById("kq_input_1");
+    div_input_1.innerHTML = value_input_1;
+    </script>
     </body>
 </html>

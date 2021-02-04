@@ -50,6 +50,22 @@ public class QuestionDao {
          }
          return list;
     }
+    public ArrayList<QuestionDTO> getQuestionDTOsbySearch(String search,String subjectid) throws SQLException{
+        Connection cn = MyConnection.MakeConnection();
+         ArrayList<QuestionDTO>  list = new ArrayList<>();
+         if(cn!=null){
+             String sql = "Select * from QuestionTbl where question_content like ? and subjectID=?";
+             PreparedStatement pst = cn.prepareStatement(sql);
+             pst.setString(1, "%"+search+"%");
+             pst.setString(2, subjectid);
+             ResultSet rs = pst.executeQuery();
+             while(rs.next()){
+                 list.add(new QuestionDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(6), rs.getInt(8),rs.getBoolean(7) ));
+             }
+             cn.close();
+         }
+         return list;
+    }
     public String getAnswerCorrectbyQuestionId(String questionID) throws SQLException{
         Connection cn = MyConnection.MakeConnection();
         String result = "";
@@ -80,5 +96,70 @@ public class QuestionDao {
         }
         return result;
     }
+    public QuestionDTO getQuestionDTObyQuestionID(String questionid) throws SQLException{
+        Connection cn = MyConnection.MakeConnection();
+         QuestionDTO  questionDTO = null;
+         if(cn!=null){
+             String sql = "Select * from QuestionTbl where questionid=?";
+             PreparedStatement pst = cn.prepareStatement(sql);
+             pst.setString(1, questionid);
+             ResultSet rs = pst.executeQuery();
+             while(rs.next()){
+                 questionDTO =new QuestionDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(6), rs.getInt(8),rs.getBoolean(7) );
+             }
+             cn.close();
+         }
+         return questionDTO;
+    }
+    public int updateQuestion(String questionid,String question , String corrent , String answer , int point) throws SQLException{
+        Connection cn = MyConnection.MakeConnection();
+        int  result =-1;
+        if(cn!=null){
+          String sql = "update QuestionTbl set question_content=?,answer_content=?,answer_correct=?,createDate=SYSDATETIME(),point=? where questionid=?";
+          PreparedStatement pst = cn.prepareStatement(sql);
+          pst.setString(1, question);
+          pst.setString(2, answer);
+          pst.setString(3, corrent);
+          pst.setInt(4, point);
+          pst.setString(5, questionid);
+          result= pst.executeUpdate();
+          cn.close();
+        }
+        return result;
+    }
+    public ArrayList<QuestionDTO> getQuestionDTOsbySubjectIDandIndex(String subjectid,int index1 , int index2) throws SQLException{
+        Connection cn = MyConnection.MakeConnection();
+         ArrayList<QuestionDTO>  list = new ArrayList<>();
+         if(cn!=null){
+             String sql = "With ab AS (\n" +
+"SELECT * , ROW_NUMBER() Over (ORDER BY  questionid) AS RowNum FROM  QuestionTbl where subjectID=? and status=0\n" +
+")\n" +
+"select * from ab\n" +
+"WHERE RowNum >=?\n" +
+"AND RowNum <= ?";
+             PreparedStatement pst = cn.prepareStatement(sql);
+             pst.setString(1, subjectid);
+             pst.setInt(2, index1);
+             pst.setInt(3, index2);
+             ResultSet rs = pst.executeQuery();
+             while(rs.next()){
+                 list.add(new QuestionDTO(rs.getString(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(6), rs.getInt(8),rs.getBoolean(7) ));
+             }
+             cn.close();
+         }
+         return list;
+    }
     
+    public int RemoveQuestion(String questionid) throws SQLException{
+        int result =-1;
+        Connection cn = MyConnection.MakeConnection();
+        if(cn!=null){
+            String sql = "update QuestionTbl set status=1 where questionid=?";
+            PreparedStatement pst = cn.prepareStatement(sql);
+            pst.setString(1, questionid);
+            result= pst.executeUpdate();
+            cn.close();
+        }
+        return result;
+    }
 }

@@ -48,6 +48,10 @@ public class TestServlet extends HttpServlet {
             String seleted[] = request.getParameterValues("selected");
             SubmitDao submitdao = new SubmitDao();
             float point_total = 0;
+            for(int i=0;i<list.size();i++){
+                point_total+=list.get(i).getPoint();
+            }
+                    
             float point_total_current= 0;
            HashMap<String, String> map = new HashMap<String, String>();
             String correct = list.get(1).getCorrect();
@@ -95,36 +99,42 @@ public class TestServlet extends HttpServlet {
                     
                     }
                     point_total_current += point_qs*(qs_current/qs_length) ;
-                    submitdao.InsertDetailSubmit(submitid, questionid, selected, (point_qs*(qs_current/qs_length)));
+                    submitdao.UpdateDetailSubmit( questionid, selected, (point_qs*(qs_current/qs_length)));
                 }else{
                     if(selected.equals(dao.getAnswerCorrectbyQuestionId(questionid)))
                     {
                         point_total_current+=point_qs;
-                        submitdao.InsertDetailSubmit(submitid, questionid, selected, point_qs);
+                        submitdao.UpdateDetailSubmit( questionid, selected, point_qs);
                     }
                         
                     else{
                         point_total_current+=0;
-                        submitdao.InsertDetailSubmit(submitid, questionid, selected, 0);
+                        submitdao.UpdateDetailSubmit( questionid, selected, 0);
                     }
                 }
                 
-            point_total+=point_qs;
-            System.out.println(point_total);
-                System.out.println(point_total_current);
-                float point = point_total_current*10/point_total;
+            
+            
+          }
+            
            
             int result = -1;
-            result= submitdao.updateSubmitEnd(submitid, point, point_total, point_total_current);
-                System.out.println(selected);
-          }
-            System.out.println(submitid);
-           float point = point_total_current*10/point_total;
-            
-            int result = -1;
-            result= submitdao.updateSubmitEnd(submitid, point, point_total, point_total_current);
+            int page = Integer.parseInt(request.getParameter("page_current"));
+            System.out.println(page); 
+            String page_selected = null;
+             page_selected = request.getParameter("page");
+             if(page_selected!=null){
+            if(page_selected.equals("Next Page")){
+                page++;
+            }
+            if(page_selected.equals("Privious Page")){
+                page--;
+            }
+             }
+            request.setAttribute("submit",request.getParameter("submit"));
+            request.setAttribute("page", page);
             request.setAttribute("submitid", submitid);
-            request.getRequestDispatcher("ConfirmPage.jsp").forward(request, response);
+            request.getRequestDispatcher("QuizPage.jsp").forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(TestServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
